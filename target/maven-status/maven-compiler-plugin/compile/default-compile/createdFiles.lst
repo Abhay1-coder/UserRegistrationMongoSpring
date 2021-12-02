@@ -1,0 +1,9 @@
+com\pratice\registeruser\DB\BookRepo.class
+com\pratice\registeruser\DB\UserRepo.class
+com\pratice\registeruser\Model\AuthModel.class
+com\pratice\registeruser\Model\Book.class
+com\pratice\registeruser\response\response.class
+com\pratice\registeruser\Controllers\UserController.class
+com\pratice\registeruser\Model\AuthBook.class
+com\pratice\registeruser\Model\User.class
+com\pratice\registeruser\RegisteruserApplication.class

@@ -1,7 +1,10 @@
 package com.pratice.registeruser.Controllers;
 
+import com.pratice.registeruser.DB.BookRepo;
 import com.pratice.registeruser.DB.UserRepo;
+import com.pratice.registeruser.Model.AuthBook;
 import com.pratice.registeruser.Model.AuthModel;
+import com.pratice.registeruser.Model.Book;
 import com.pratice.registeruser.Model.User;
 import com.pratice.registeruser.response.response;
 import java.util.*;
@@ -9,6 +12,9 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +29,10 @@ public class UserController {
     @Autowired
     UserRepo userRepo;
 
-    @PostMapping("/register")
+    @Autowired 
+    BookRepo bookRepo;
+
+    @PostMapping("/register")// registration
     public response addUser(@RequestBody User user){
         if(userRepo.count()>0){
             List<User>list =userRepo.findAll();
@@ -51,19 +60,31 @@ public class UserController {
 
         }
     }
-    @PostMapping("/login")
+    @PostMapping("/login") // login 
     public response userLogin(@RequestBody AuthModel authModel){
         if(userRepo.count()>0){
            List<User> list= userRepo.findAll();
            for (User u : list) {
                if(u.getEmail().equals(authModel.getEmail()) && u.getPassword().equals(authModel.getPassword())){
                    return new response(200, "login sucess", u);
-               }
-               
-               
+               }  
            }
         }
         return new response(404, "no user in db", authModel);
     }
+
+ 
+
+    // @DeleteMapping("/deleteBook/{name}")
+    // public response deleteBook(@PathVariable("name") String name){
+    //     try{
+    //         bookRepo.findOne(name);
+    //         return new response(200, "book deleted", name);
+    //     }catch(Exception e){
+    //         return new response(400, "oops found some issue", e);
+    //     }
+    // }
+
+
     
 }
