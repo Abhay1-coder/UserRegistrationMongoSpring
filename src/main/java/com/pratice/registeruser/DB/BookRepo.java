@@ -4,8 +4,5 @@ import com.pratice.registeruser.Model.Book;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface BookRepo extends MongoRepository<Book, String> {
-
-    void findOne(String name);
-    
+public interface BookRepo extends MongoRepository<Book, String> {    
 }

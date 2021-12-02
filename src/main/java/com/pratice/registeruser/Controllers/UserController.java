@@ -73,6 +73,44 @@ public class UserController {
         return new response(404, "no user in db", authModel);
     }
 
+    @PostMapping("/addBook")// it will add book in database
+    public response addBook(@RequestBody Book book){
+        if(bookRepo.count()>0){
+            List<Book>list =bookRepo.findAll();
+            for (Book b : list) {
+                if(b.getName().equals(book.getName())){
+                    return new response(200, "alread exit",book);
+                } 
+            }
+        }
+
+        try{
+            bookRepo.insert(book);
+            return new response(200, "book inserted sucessfully", book);
+        }catch(Exception e){
+            return new response(404, "opps found some issue", e);
+        }
+    }
+
+    @GetMapping("/getAllBook")// it will return all books details from data base
+    public response getAllBook(){
+        List<Book> list = bookRepo.findAll();     
+        return new response(200, "match  found", list);
+    }
+
+    @PostMapping("/getBook")
+    public response getBook(@RequestBody AuthBook authBook){
+        if(bookRepo.count()>0){
+            List<Book> list = bookRepo.findAll();
+            for (Book bk : list) {
+                if(bk.getName().equals(authBook.getName())){
+                    return new response(200, "match found", bk);
+                }   
+            }
+        }
+        return new response(400, "match not found",authBook );
+    }
+
  
 
     // @DeleteMapping("/deleteBook/{name}")
