@@ -1,28 +1,19 @@
 package com.pratice.registeruser.Model;
 
+import org.springframework.data.annotation.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
+@Data
+@AllArgsConstructor
 public class AuthModel {
+    @Id
+    String Id;
     String email;
     String password;
-    public AuthModel(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    @Override
-    public String toString() {
-        return "AuthModel [email=" + email + ", password=" + password + "]";
-    }
-    
     
 }

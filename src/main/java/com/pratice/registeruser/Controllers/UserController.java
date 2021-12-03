@@ -8,13 +8,10 @@ import com.pratice.registeruser.Model.Book;
 import com.pratice.registeruser.Model.User;
 import com.pratice.registeruser.response.response;
 import java.util.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,6 +82,7 @@ public class UserController {
         }
 
         try{
+            book.setId(UUID.randomUUID().toString());
             bookRepo.insert(book);
             return new response(200, "book inserted sucessfully", book);
         }catch(Exception e){
@@ -111,18 +109,30 @@ public class UserController {
         return new response(400, "match not found",authBook );
     }
 
- 
+    //deleting entry from data base
+    @PostMapping("/deleteBook")
+    public response deleteBook(@RequestBody Book book){
+        List<Book> list =bookRepo.findAll();
+        for (Book book2 : list) {
+            if(book2.getId().equals(book.getId())){
+                deleteBook(book);
+                return new response(200, "book deleted sucessfully", book);
+            }  
+        }
+        return new response(404, "match not found", null);
+    }
 
-    // @DeleteMapping("/deleteBook/{name}")
-    // public response deleteBook(@PathVariable("name") String name){
-    //     try{
-    //         bookRepo.findOne(name);
-    //         return new response(200, "book deleted", name);
-    //     }catch(Exception e){
-    //         return new response(400, "oops found some issue", e);
-    //     }
-    // }
-
-
+    //updating entry of data base
+    @PostMapping("/updateBook")
+    public response updateBook(@RequestBody Book book){
+        if(bookRepo.existsById(book.getId())){// it will check the id we enter is present in bookrepo or not
+            Book bok = bookRepo.findById(book.getId()).get();//it will take id from  out entry and store in bok 
+            bok.setName(book.getName());////here we set name from our entry to bok
+            bok.setAuthor(book.getAuthor());// here we set author form our entry to bok
+            bookRepo.save(bok);//here we sae bok in out bookrepo and it will update our data
+            return new response(200,"editied sucessfully", bok);
+        }
+        return new response(404,"book not found", null);
+    }
     
 }
